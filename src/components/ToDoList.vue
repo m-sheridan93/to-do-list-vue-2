@@ -1,12 +1,14 @@
 <template>
   <div class="todo-list">
     <h1>To Do List</h1>
-    <input type="text" placeholder="Add a new task..." v-model="newTaskText"/>
+    <input type="text" placeholder="Add a new task..." v-model="newTaskText" @keyup.enter="addTask"/>
     <button type="button" @click="addTask" class="add-task-button">Add</button>
     <ol>
       <li v-for="(task, index) in tasksList" :key="index">
         <input type="checkbox" v-model="task.completed"/>
         <span :class="{completed: task.completed}">{{ task.text }}</span>
+        <button type="button" class="edit-button" @click="setEditIndex(index)">Edit</button>
+        <input type="text" v-if="editingIndex === index" v-model="task.text" @keyup.enter="editingIndex = null"/>
         <button type="button" class="delete-button" @click="deleteTask(index)">Delete</button>
       </li>
     </ol>
@@ -18,29 +20,32 @@ export default {
   name: 'ToDoList',
   data() {
     return {
-      tasksList: [
-        { text: 'eat', completed: false },
-        { text: 'sleep', completed: false },
-        { text: 'drink', completed: false }
-      ],
-      newTaskText: ''
+      tasksList: [{text: "test", completed: false}],
+      newTaskText: '',
+      editingIndex: null,
     }
   },
   methods: {
+    setEditIndex(index) {
+      this.editingIndex = index;
+    },
     addTask() {
       if (this.newTaskText !== '')
-        this.tasksList.push({ text: this.newTaskText, completed: false });
+        this.tasksList.push({text: this.newTaskText, completed: false});
       this.newTaskText = '';
     },
     deleteTask(index) {
       this.tasksList.splice(index, 1)
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style scoped>
-body { background: hsl(0,0%,31%); }
+body {
+  background: hsl(0, 0%, 31%);
+}
+
 button {
   margin: 10px;
   align-items: center;
@@ -53,13 +58,15 @@ button {
   cursor: pointer;
   transition: background-color 0.5s;
 }
+
 input[type="text"] {
   font-size: 1.2rem;
   padding: 10px;
-  border: 2px solid hsla(0,0%,80%,0.5);
+  border: 2px solid hsla(0, 0%, 80%, 0.5);
   border-radius: 5px;
   color: black;
 }
+
 .delete-button {
   background: #a00;
   color: #fff;
@@ -67,7 +74,18 @@ input[type="text"] {
   border-radius: 3px;
   margin-left: 10px;
 }
-ol { padding: 0; }
+
+.edit-button {
+  background-color: aquamarine;
+  padding: 4px 10px;
+  border-radius: 3px;
+  margin-left: 10px;
+}
+
+ol {
+  padding: 0;
+}
+
 li {
   display: flex;
   align-items: center;
@@ -76,11 +94,20 @@ li {
   list-style: none;
   font-size: 1.5rem;
   font-weight: bold;
-  background: hsl(0,0%,95%);
+  background: hsl(0, 0%, 95%);
   margin-bottom: 10px;
-  border: 2px solid hsla(0,0%,85%,0.75);
+  border: 2px solid hsla(0, 0%, 85%, 0.75);
   border-radius: 5px;
 }
-li span { flex: 1; word-break: break-word; }
-.completed { text-decoration: line-through; color: #aaa; opacity: 0.7; }
+
+li span {
+  flex: 1;
+  word-break: break-word;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #aaa;
+  opacity: 0.7;
+}
 </style>
