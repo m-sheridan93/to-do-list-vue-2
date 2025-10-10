@@ -1,15 +1,19 @@
 <template>
   <div class="todo-list">
     <h1>To Do List</h1>
-    <input type="text" placeholder="Add a new task..." v-model="newTaskText" @keyup.enter="addTask"/>
-    <button type="button" @click="addTask" class="add-task-button">Add</button>
+    <input type="text"
+           placeholder="Add a task..."
+           v-model="newTaskForList"
+           @keyup.enter="addTask()"/>
+    <button
+        type="button"
+        @click="addTask()"
+    >Add
+    </button>
     <ol>
       <li v-for="(task, index) in tasksList" :key="index">
-        <input type="checkbox" v-model="task.completed"/>
         <span :class="{completed: task.completed}">{{ task.text }}</span>
-        <button type="button" class="edit-button" @click="setEditIndex(index)">Edit</button>
-        <input type="text" v-if="editingIndex === index" v-model="task.text" @keyup.enter="editingIndex = null"/>
-        <button type="button" class="delete-button" @click="deleteTask(index)">Delete</button>
+        <button class="delete-button" @click="deleteTask(index)">Delete</button>
       </li>
     </ol>
   </div>
@@ -20,23 +24,20 @@ export default {
   name: 'ToDoList',
   data() {
     return {
-      tasksList: [{text: "test", completed: false}],
-      newTaskText: '',
-      editingIndex: null,
+      tasksList: [],
+      newTaskForList: '',
     }
   },
   methods: {
-    setEditIndex(index) {
-      this.editingIndex = index;
-    },
     addTask() {
-      if (this.newTaskText !== '')
-        this.tasksList.push({text: this.newTaskText, completed: false});
-      this.newTaskText = '';
+      if (this.newTaskForList !== '') {
+        this.tasksList.push({text: this.newTaskForList, completed: false})
+        this.newTaskForList = '';
+      }
     },
     deleteTask(index) {
       this.tasksList.splice(index, 1)
-    },
+    }
   },
 }
 </script>
