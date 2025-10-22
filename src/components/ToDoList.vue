@@ -12,6 +12,7 @@
     </button>
     <ol>
       <li v-for="(task, index) in tasksList" :key="index">
+        <input class="check-box" type="checkbox" v-model="task.completed" />
         <span :class="{completed: task.completed}">{{ task.text }}</span>
         <button class="delete-button" @click="deleteTask(index)">Delete</button>
       </li>
@@ -68,16 +69,18 @@ input[type="text"] {
   color: black;
 }
 
+.check-box {
+  height: 20px;
+  width: 20px;
+}
+
+.check-box:checked {
+  accent-color: aquamarine;
+}
+
 .delete-button {
   background: #a00;
   color: #fff;
-  padding: 4px 10px;
-  border-radius: 3px;
-  margin-left: 10px;
-}
-
-.edit-button {
-  background-color: aquamarine;
   padding: 4px 10px;
   border-radius: 3px;
   margin-left: 10px;
